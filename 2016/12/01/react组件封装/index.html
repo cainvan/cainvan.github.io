@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/hexo-theme-huxblog/img/favicon.ico">
+
+    <title>
+        
+          react-native组件封装 - Cainvan的博客 | Cainvan&#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://kaijun.rocks/hexo-theme-huxblog/hexo-theme-huxblog/2016/12/01/react组件封装/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/hexo-theme-huxblog/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/hexo-theme-huxblog/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/hexo-theme-huxblog/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="http://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/hexo-theme-huxblog/">Cain&#39;s Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/hexo-theme-huxblog/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/hexo-theme-huxblog/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/hexo-theme-huxblog/archives/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/hexo-theme-huxblog/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://kaijun.rocks/hexo-theme-huxblog/hexo-theme-huxblog/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('post-bg-js-version.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/hexo-theme-huxblog/tags/#前端开发" title="前端开发">前端开发</a>
+                        
+                          <a class="tag" href="/hexo-theme-huxblog/tags/#JavaScript" title="JavaScript">JavaScript</a>
+                        
+                          <a class="tag" href="/hexo-theme-huxblog/tags/#翻译" title="翻译">翻译</a>
+                        
+                    </div>
+                    <h1>react-native组件封装</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by Cain on
+                        2016-12-01
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p><img src="http://upload-images.jianshu.io/upload_images/2541263-c442265ba4189731.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="react native.jpg"></p>
+<hr>
+<p>对于目前的移动端原生开发来说，想要完成一个app的开发工作是比较容易的，因为原生代码在网上所提供出来的各种开源的第三方组件已经成千上万了，足以支撑起你的业务需求。但是如果我们想要在React Native上使用第三方组件怎么办？</p>
+<p>众所周知，React Native自身框架也提供了一部分基础组件，已经可以基本满足我们的开发需求，但是，当我们需要使用第三方接口的时候该如何？目前市面上基本所有的第三方组件接口都还不提供对React Native的支持，所以，需要使用第三方的时候，还得我们自己来封装处理。</p>
+<p>接下来，我们一步一步来封装友盟分享的组件。</p>
+<hr>
+<p>1、首先导入友盟分享SDK，然后添加相关的底层依赖文件：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/2541263-a57a88622053ede3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="1.png"></p>
+<p>底层依赖库的添加：项目 –&gt; build phases –&gt; link binary with libraries<br>在link binary with libraries中点加号，添加上图中的依赖文件，如下图所示。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/2541263-c6fb9376873a91ff.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="2.png"></p>
+<p>2、    添加好依赖文件之后，我们接下来完成在原生中的那部分代码。<br>(1)    在AppDelegate中的application:didFinishLaunchingWithOptions: 方法中设置友盟AppKey：<br><figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"> <span class="comment">// 设置友盟AppKey</span></div><div class="line">[UMSocialData <span class="string">setAppKey:</span>@<span class="string">"57355f3e67e58ed0a50030a1"</span>];</div></pre></td></tr></table></figure></p>
+<p>(2)    写一个分享按钮类，继承于UIButton，然后在其中引入友盟分享头文件UMSocial.h，接下来就可以写按钮触发的分享事件了。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#import <span class="meta-string">"MyShareBt.h"</span></span></div><div class="line"><span class="meta">#import <span class="meta-string">"UMSocial.h"</span></span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">MyShareBt</span></span></div><div class="line"><span class="comment">//分享按钮初始化</span></div><div class="line">- (<span class="keyword">instancetype</span>) initWithFrame:(<span class="built_in">CGRect</span>)frame&#123;</div><div class="line">  <span class="keyword">if</span> ((<span class="keyword">self</span> = [<span class="keyword">super</span> initWithFrame:frame])) &#123;</div><div class="line">    [<span class="keyword">self</span> addTarget:<span class="keyword">self</span> action:<span class="keyword">@selector</span>(share)</div><div class="line">   forControlEvents:<span class="built_in">UIControlEventTouchUpInside</span>];</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> <span class="keyword">self</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 按钮分享事件</span></div><div class="line">- (<span class="keyword">void</span>)share &#123;</div><div class="line">  [UMSocialSnsService presentSnsIconSheetView:[<span class="built_in">UIApplication</span> sharedApplication].keyWindow.rootViewController appKey:@”yourAppKey” shareText:@”test” shareImage:[<span class="built_in">UIImage</span> imageNamed:@”yourImageName”] shareToSnsNames:[<span class="built_in">NSArray</span> arrayWithObjects:UMShareToWechatSession,UMShareToWechatTimeline,UMShareToQzone,UMShareToSina,UMShareToTencent,<span class="literal">nil</span>]  delegate:<span class="literal">nil</span>];</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">@end</span></div></pre></td></tr></table></figure>
+<p>(3)穿件分享组件Manager类，该类继承于RCTViewManager。创建好之后，添加标记宏RCT_EXPORT_MODULE()将该模块导出作为一个组件。最后实现-(UIView *)view方法。代码如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#import <span class="meta-string">"shareButtonManager.h"</span></span></div><div class="line"><span class="meta">#import <span class="meta-string">"RCTViewManager.h"</span></span></div><div class="line"><span class="meta">#import <span class="meta-string">"UMSocial.h"</span></span></div><div class="line"><span class="meta">#import <span class="meta-string">"MyShareBt.h"</span></span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">shareBt</span> : <span class="title">RCTViewManager</span></span></div><div class="line"></div><div class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>) MyShareBt *bt;</div><div class="line"></div><div class="line"><span class="keyword">@end</span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">shareBt</span></span></div><div class="line"></div><div class="line">RCT_EXPORT_MODULE()</div><div class="line"></div><div class="line">- (<span class="built_in">UIView</span> *)view</div><div class="line">&#123;</div><div class="line">  _bt = [[MyShareBt alloc] initWithFrame:<span class="built_in">CGRectMake</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)];</div><div class="line">  <span class="keyword">return</span> _bt;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">@end</span></div></pre></td></tr></table></figure>
+<p>至此，原生部分代码最基本的展示部分完成了，接下来就需要在JS中进行进一步封装，以提供给JS调用。</p>
+<p>3、接下来实现JS中的组件封装与简单调用。<br>首先导入原生组件，从导入中取得我们所创建的组件，将其作为默认的组件导出，以供其他JS调用。这里，我们其实可以直接在其他JS中调用了，但是为了进行参数的封装，我们也需要将其封装成一个单独的组件。</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> <span class="type">React</span>, &#123; <span class="type">Component</span>, <span class="type">PropTypes</span> &#125; from <span class="symbol">'reac</span>t';</div><div class="line"><span class="keyword">import</span> &#123; requireNativeComponent&#125; from <span class="symbol">'react</span>-native';</div><div class="line"></div><div class="line"><span class="keyword">var</span> <span class="type">ShareBt</span> = requireNativeComponent(<span class="symbol">'shareB</span>t', <span class="type">ZKShareBt</span>);</div><div class="line"></div><div class="line">export <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> <span class="title">ZKShareBt</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</div><div class="line">  render() &#123;</div><div class="line">    <span class="keyword">return</span> (</div><div class="line">      &lt;<span class="type">ShareBt</span> &#123;...<span class="keyword">this</span>.props&#125; /&gt;</div><div class="line">    );</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>封装组件的调用。下图所示是前面封装组件的调用，这里我们已经封装了很多JS需要传递给原生的参数，接下来，我们就来说说参数以及事件处理的封装。<br><figure class="highlight xquery"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&lt;ZKShareBt style=&#123;styles.map&#125;</div><div class="line">            appKey=&#123;<span class="string">'57355f3e67e58ed0a50030a1'</span>&#125;</div><div class="line">            shareText=&#123;<span class="string">'这是分享内容'</span>&#125;</div><div class="line">            imageName=&#123;<span class="string">'logo'</span>&#125;</div><div class="line">            //myTitle = &#123;this.state.btText&#125;//设置分享按钮标题</div><div class="line">            //color=&#123;this.state.color&#125;//设置分享按钮标题字体颜色</div><div class="line">            btImageName = &#123;<span class="string">'share_icon'</span>&#125; //设置分享按钮图片</div><div class="line">   /&gt;</div></pre></td></tr></table></figure></p>
+<p>4、参数的封装<br>(1) 定义需要传递的参数</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#import <span class="meta-string">&lt;UIKit/UIKit.h&gt;</span></span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">MyShareBt</span> : <span class="title">UIButton</span></span></div><div class="line"></div><div class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">copy</span>) <span class="built_in">NSString</span> * appKey;<span class="comment">//友盟appkey</span></div><div class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">copy</span>) <span class="built_in">NSString</span> * shareText;<span class="comment">//分享的文本</span></div><div class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">copy</span>) <span class="built_in">NSString</span> * imageName;<span class="comment">//分享的图片</span></div><div class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">copy</span>) <span class="built_in">NSString</span> * myTitle;<span class="comment">//分享按钮标题</span></div><div class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>) <span class="built_in">UIColor</span> * color;<span class="comment">//按钮标题字体颜色</span></div><div class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">copy</span>) <span class="built_in">NSString</span> * btImageName;<span class="comment">//分享按钮图片</span></div><div class="line"></div><div class="line"><span class="keyword">@end</span></div></pre></td></tr></table></figure>
+<p>(2)以上参数是我们需要从JS传递给原生的，所以我们首先在原生代码中定义好所需要的参数。定义好之后，我们需要使用RCT_EXPORT_VIEW_PROPERTY宏将其导出给JS。<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#import <span class="meta-string">"shareButtonManager.h"</span></span></div><div class="line"><span class="meta">#import <span class="meta-string">"RCTViewManager.h"</span></span></div><div class="line"><span class="meta">#import <span class="meta-string">"UMSocial.h"</span></span></div><div class="line"><span class="meta">#import <span class="meta-string">"MyShareBt.h"</span></span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">shareBt</span> : <span class="title">RCTViewManager</span></span></div><div class="line"></div><div class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>) MyShareBt *bt;</div><div class="line"></div><div class="line"><span class="keyword">@end</span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">shareBt</span></span></div><div class="line"></div><div class="line">RCT_EXPORT_MODULE()</div><div class="line"></div><div class="line">- (<span class="built_in">UIView</span> *)view</div><div class="line">&#123;</div><div class="line">  _bt = [[MyShareBt alloc] initWithFrame:<span class="built_in">CGRectMake</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)];</div><div class="line">  <span class="keyword">return</span> _bt;</div><div class="line">&#125;</div><div class="line"><span class="comment">//将所需参数导出给JS</span></div><div class="line">RCT_EXPORT_VIEW_PROPERTY(appKey, <span class="built_in">NSString</span>)</div><div class="line">RCT_EXPORT_VIEW_PROPERTY(shareText, <span class="built_in">NSString</span>)</div><div class="line">RCT_EXPORT_VIEW_PROPERTY(imageName, <span class="built_in">NSString</span>)</div><div class="line">RCT_EXPORT_VIEW_PROPERTY(myTitle, <span class="built_in">NSString</span>)</div><div class="line">RCT_EXPORT_VIEW_PROPERTY(color, <span class="built_in">UIColor</span>)</div><div class="line">RCT_EXPORT_VIEW_PROPERTY(btImageName, <span class="built_in">NSString</span>)</div><div class="line"></div><div class="line"><span class="keyword">@end</span></div></pre></td></tr></table></figure></p>
+<p>(3)重写参数set方法，并给按钮属性赋值，设置UI。<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#import <span class="meta-string">"MyShareBt.h"</span></span></div><div class="line"><span class="meta">#import <span class="meta-string">"UMSocial.h"</span></span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">MyShareBt</span></span></div><div class="line"></div><div class="line">- (<span class="keyword">instancetype</span>) initWithFrame:(<span class="built_in">CGRect</span>)frame&#123;</div><div class="line">  <span class="keyword">if</span> ((<span class="keyword">self</span> = [<span class="keyword">super</span> initWithFrame:frame])) &#123;</div><div class="line">    [<span class="keyword">self</span> addTarget:<span class="keyword">self</span> action:<span class="keyword">@selector</span>(share)</div><div class="line">   forControlEvents:<span class="built_in">UIControlEventTouchUpInside</span>];</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> <span class="keyword">self</span>;</div><div class="line">&#125;</div><div class="line"><span class="comment">//重写所传递参数的set方法，并将传递过来的参数用于设置UI</span></div><div class="line">- (<span class="keyword">void</span>)setMyTitle:(<span class="built_in">NSString</span> *)myTitle&#123;</div><div class="line">  [<span class="keyword">self</span> setTitle:myTitle forState:<span class="built_in">UIControlStateNormal</span>];</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (<span class="keyword">void</span>)setColor:(<span class="built_in">UIColor</span> *)color&#123;</div><div class="line">  [<span class="keyword">self</span> setTitleColor:color forState:<span class="built_in">UIControlStateNormal</span>];</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (<span class="keyword">void</span>)setBtImageName:(<span class="built_in">NSString</span> *)btImageName&#123;</div><div class="line">  [<span class="keyword">self</span> setBackgroundImage:[<span class="built_in">UIImage</span> imageNamed:btImageName] forState:<span class="built_in">UIControlStateNormal</span>];</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (<span class="keyword">void</span>)share &#123;</div><div class="line">  [UMSocialSnsService presentSnsIconSheetView:[<span class="built_in">UIApplication</span> sharedApplication].keyWindow.rootViewController appKey:_appKey shareText:_shareText shareImage:[<span class="built_in">UIImage</span> imageNamed:_imageName] shareToSnsNames:[<span class="built_in">NSArray</span> arrayWithObjects:UMShareToWechatSession,UMShareToWechatTimeline,UMShareToQzone,UMShareToSina,UMShareToTencent,<span class="literal">nil</span>]  delegate:<span class="literal">nil</span>];</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">@end</span></div></pre></td></tr></table></figure></p>
+<p>(4)在JS中将参数封装起来。<br><figure class="highlight scala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> <span class="type">React</span>, &#123; <span class="type">Component</span>, <span class="type">PropTypes</span> &#125; from <span class="symbol">'reac</span>t';</div><div class="line"><span class="keyword">import</span> &#123; requireNativeComponent&#125; from <span class="symbol">'react</span>-native';</div><div class="line"></div><div class="line"><span class="keyword">var</span> <span class="type">ShareBt</span> = requireNativeComponent(<span class="symbol">'shareB</span>t', <span class="type">ZKShareBt</span>);</div><div class="line"></div><div class="line">export <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> <span class="title">ZKShareBt</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</div><div class="line">  static propTypes = &#123;</div><div class="line">    <span class="comment">/**</span></div><div class="line">    *</div><div class="line">    * 定义组件需要传到原生端的属性</div><div class="line">    * 使用React.PropTypes来进行校验</div><div class="line">    */</div><div class="line">    <span class="comment">//使用第三方分享时设置的appKey</span></div><div class="line">    appKey:<span class="type">PropTypes</span>.string,</div><div class="line"></div><div class="line">    <span class="comment">//要分享的内容</span></div><div class="line">    shareText:<span class="type">PropTypes</span>.string,</div><div class="line"></div><div class="line">    <span class="comment">//需要分享的图片名字（需要事先放在xcode工程中，只需要名字，不需要路径）</span></div><div class="line">    imageName:<span class="type">PropTypes</span>.string,</div><div class="line"></div><div class="line">    <span class="comment">//分享按钮标题</span></div><div class="line">    myTitle:<span class="type">PropTypes</span>.string,</div><div class="line"></div><div class="line">    <span class="comment">//分享按钮标题颜色</span></div><div class="line">    color:<span class="type">PropTypes</span>.string,</div><div class="line"></div><div class="line">    <span class="comment">//分享按钮图片</span></div><div class="line">    btImageName:<span class="type">PropTypes</span>.string,</div><div class="line">  &#125;;</div><div class="line">  render() &#123;</div><div class="line">    <span class="keyword">return</span> (</div><div class="line">      &lt;<span class="type">ShareBt</span> &#123;...<span class="keyword">this</span>.props&#125; /&gt;</div><div class="line">    );</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>封装好之后，就可以直接调用了。<br><figure class="highlight xquery"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&lt;ZKShareBt style=&#123;styles.map&#125;</div><div class="line">            appKey=&#123;<span class="string">'57355f3e67e58ed0a50030a1'</span>&#125;</div><div class="line">            shareText=&#123;<span class="string">'分享内容'</span>&#125;</div><div class="line">            imageName=&#123;<span class="string">'logo'</span>&#125;</div><div class="line">            //myTitle = &#123;this.state.btText&#125;//设置分享按钮标题</div><div class="line">            //color=&#123;this.state.color&#125;//设置分享按钮标题字体颜色</div><div class="line">            btImageName = &#123;<span class="string">'share_icon'</span>&#125; //设置分享按钮图片</div><div class="line">   /&gt;</div></pre></td></tr></table></figure></p>
+<p>运行结果：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/2541263-fefefa63cf95ef1d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="3.png"></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/2541263-860adfa44062d6fc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="4.png"></p>
+<p>（第一张图中，一不小心封装了其他App中的视图，这里可以通过fetch请求网络数据，获取流量之后传给原生并根据值的变化动态显示流量所占百分比。请自动忽略。。。。。。）</p>
+<p>以上是涉及到UI以及相关参数传递的封装工作，接下来，需要做的是事件的封装。这里事件封装用到的是RCTBubblingEventBlock宏。<br>封装事件是，首先，我们需要首先在原生中先定义好需要在JS调用的方法模块。<br>和之前参数定义一样，放在原生UI模块.h文件中</p>
+<h4 id="MyShareBt-h"><a href="#MyShareBt-h" class="headerlink" title="MyShareBt.h"></a>MyShareBt.h</h4><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/** button点击事件*/</span></div><div class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">copy</span>) RCTBubblingEventBlock onButtonClicked;</div></pre></td></tr></table></figure>
+<p>和参数一样，接下来需要导出：</p>
+<h4 id="shareButtonManager-m"><a href="#shareButtonManager-m" class="headerlink" title="shareButtonManager.m"></a>shareButtonManager.m</h4><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="title">RCT_EXPORT_VIEW_PROPERTY</span><span class="params">(onButtonClicked, RCTBubblingEventBlock)</span></span></div></pre></td></tr></table></figure>
+<p>导出之后，这里我就简单的定义一个分享按钮点击时触发的Delegate方法</p>
+<h4 id="MyShareBt-h-1"><a href="#MyShareBt-h-1" class="headerlink" title="MyShareBt.h"></a>MyShareBt.h</h4><figure class="highlight less"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="variable">@protocol</span> ShareButtonClickedDelegate &lt;NSObject&gt;</div><div class="line"><span class="variable">@optional</span></div><div class="line"><span class="comment">//代理方法</span></div><div class="line">- (void)ButtonClicked;</div><div class="line"><span class="variable">@end</span></div></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">strong</span>) <span class="keyword">id</span> &lt;ShareButtonClickedDelegate&gt; ClickDelagate;</div></pre></td></tr></table></figure>
+<p>该代理方法在按钮点击分享的时候执行：</p>
+<h4 id="MyShareBt-m"><a href="#MyShareBt-m" class="headerlink" title="MyShareBt.m"></a>MyShareBt.m</h4><figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)share &#123;</div><div class="line">  <span class="comment">//调用代理方法</span></div><div class="line">  [self.ClickDelagate ButtonClicked];</div><div class="line">  <span class="comment">//友盟分享</span></div><div class="line">  [UMSocialSnsService <span class="string">presentSnsIconSheetView:</span>[UIApplication sharedApplication].keyWindow.rootViewController <span class="string">appKey:</span>_appKey <span class="string">shareText:</span>_shareText <span class="string">shareImage:</span>[UIImage <span class="string">imageNamed:</span>_imageName] <span class="string">shareToSnsNames:</span>[NSArray <span class="string">arrayWithObjects:</span>UMShareToWechatSession,UMShareToWechatTimeline,UMShareToQzone,UMShareToSina,UMShareToTencent,nil]  <span class="string">delegate:</span>nil];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>接下来，是实现该代理方法（我在这里设了一个随机数，传到JS中，提供给JS使用，后面JS就可以直接使用传过去的这个随机数）：</p>
+<h4 id="shareButtonManager-m-1"><a href="#shareButtonManager-m-1" class="headerlink" title="shareButtonManager.m"></a>shareButtonManager.m</h4><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#pragma mark ShareButtonClickedDelegate</span></div><div class="line">- (<span class="keyword">void</span>)ButtonClicked &#123;</div><div class="line">  <span class="built_in">NSInteger</span> x = arc4random() % <span class="number">100</span>;</div><div class="line">  <span class="built_in">NSLog</span>(<span class="string">@"原生事件%ld"</span>,x);</div><div class="line"><span class="comment">// 将onButtonClicked事件导出</span></div><div class="line">  _bt.onButtonClicked(@&#123;<span class="string">@"randomValue"</span>: [<span class="built_in">NSNumber</span> numberWithInteger:x]&#125;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>下面我们在js文件中处理：<br>同样，在参数中添加上onButtonClicked。</p>
+<h4 id="ZKShareButton-js"><a href="#ZKShareButton-js" class="headerlink" title="ZKShareButton.js"></a>ZKShareButton.js</h4><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//按钮点击事件</span></div><div class="line">onButtonClicked:PropTypes<span class="selector-class">.func</span>,</div></pre></td></tr></table></figure>
+<p>添加好之后，就可以调用了，调用如下：<br><figure class="highlight mel"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">onButtonClicked=&#123;(<span class="keyword">event</span>) =&gt; &#123;</div><div class="line">            console.<span class="keyword">log</span>(<span class="string">'React事件'</span> + <span class="keyword">event</span>.nativeEvent.randomValue);</div><div class="line">&#125;&#125;</div></pre></td></tr></table></figure></p>
+<p>结果显示：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/2541263-df86e963e5972bfe.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="5.png"></p>
+<p>Demo下载地址（之前的一个示例，比较粗糙，有不当之处还请多多指正，谢谢啦）：<br><a href="https://github.com/cainvan/NativeViewTestDemo" target="_blank" rel="external">NativeViewTestDemo</a><br><a href="https://github.com/cainvan/NativeViewTestDemo" target="_blank" rel="external">https://github.com/cainvan/NativeViewTestDemo</a></p>
+<p>封装的一个iOS平台轮播组件及示例：<br><strong><a href="https://github.com/cainvan/react-native-zkbanner" target="_blank" rel="external">react-native-zkbanner</a></strong><br><strong><a href="https://github.com/cainvan/ReactBannerDemo" target="_blank" rel="external">ReactBannerDemo</a></strong></p>
+<p>封装的一个H5端的轮播组件：<strong><a href="https://github.com/cainvan/react-zkcarousel" target="_blank" rel="external">react-zkcarousel</a></strong></p>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/hexo-theme-huxblog/2015/07/09/js-module-7day/" data-toggle="tooltip" data-placement="top" title="Example Post using Keynote Layout">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+                <!-- disqus 评论框 start -->
+                <div class="comment">
+                    <div id="disqus_thread" class="disqus-thread"></div>
+                </div>
+                <!-- disqus 评论框 end -->
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/hexo-theme-huxblog/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/hexo-theme-huxblog/tags/#前端开发" title="前端开发">前端开发</a>
+                        
+                          <a class="tag" href="/hexo-theme-huxblog/tags/#JavaScript" title="JavaScript">JavaScript</a>
+                        
+                          <a class="tag" href="/hexo-theme-huxblog/tags/#翻译" title="翻译">翻译</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="http://blog.kaijun.rocks" target="_blank">Cain&#39;s Blog</a></li>
+                    
+                        <li><a href="http://huangxuan.me" target="_blank">Hux Blog</a></li>
+                    
+                        <li><a href="#" target="_blank">Foo</a></li>
+                    
+                        <li><a href="#" target="_blank">Bar</a></li>
+                    
+                        <li><a href="#" target="_blank">Example Friends</a></li>
+                    
+                        <li><a href="#" target="_blank">It helps SEO</a></li>
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "hexo-theme-huxblog";
+    var disqus_identifier = "http://kaijun.rocks/hexo-theme-huxblog/hexo-theme-huxblog/2016/12/01/react组件封装/";
+    var disqus_url = "http://kaijun.rocks/hexo-theme-huxblog/hexo-theme-huxblog/2016/12/01/react组件封装/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("http://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                    <li>
+                        <a target="_blank" href="https://twitter.com/Demonbane_x">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/Demonbane">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/Demonbane">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://www.facebook.com/demonbane.cn">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/cainvan">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://www.linkedin.com/in/kaijun-chen-42089354">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Cain&#39;s Blog 2016 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    Ported by <a href="http://blog.kaijun.rocks">Kaijun</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=kaijun&repo=hexo-theme-huxblog&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/hexo-theme-huxblog/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/hexo-theme-huxblog/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/hexo-theme-huxblog/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://kaijun.rocks/hexo-theme-huxblog/hexo-theme-huxblog/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("http://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-49627206-1';
+    var _gaDomain = 'huangxuan.me';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = '4cc1f2d8f3067386cc5cdb626a202900';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="http://kaijun.rocks/hexo-theme-huxblog/hexo-theme-huxblog/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
