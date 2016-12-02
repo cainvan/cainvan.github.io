@@ -13,11 +13,11 @@
 
     <title>
         
-          React Native组件封装上传简单教程 - Cainvan的博客 | Cainvan&#39;s Blog
+          Example Post using Keynote Layout - Cainvan的博客 | Cainvan&#39;s Blog
         
     </title>
 
-    <link rel="canonical" href="https://cainvan.github.iohttps://cainvan.github.io/2016/12/01/React Native 组件封装上传简单教程/">
+    <link rel="canonical" href="https://cainvan.github.iohttps://cainvan.github.io/2015/07/09/js-module-7day/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="https:/cainvan.github.io/css/bootstrap.min.css">
@@ -155,29 +155,42 @@
 <!-- Post Header -->
 <style type="text/css">
     header.intro-header{
-        background-image: url('home-bg-o.jpg')
+        /*background-image: url('{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}')*/
+        height: 500px;
+        overflow: hidden;
+    }
+    header iframe{
+        width: 100%;
+        height: 100%;
+        border: 0;
     }
 </style>
 <header class="intro-header" >
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <div class="post-heading">
-                    <div class="tags">
-                        
-                          <a class="tag" href="https://cainvan.github.io/tags/#NPM" title="NPM">NPM</a>
-                        
+    <iframe src="http://huangxuan.me/js-module-7day/"/>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="https://cainvan.github.io/tags/前端开发/" title="前端开发">前端开发</a>
+                            
+                              <a class="tag" href="https://cainvan.github.io/tags/JavaScript/" title="JavaScript">JavaScript</a>
+                            
+                        </div>
+
+                        <h1>Example Post using Keynote Layout</h1>
+                        <h2 class="subheading">Keynote: JavaScript Modularization Journey</h2>
+                        <span class="meta">
+                            Posted by Hux on
+                            2015-07-09
+                        </span>
+
                     </div>
-                    <h1>React Native组件封装上传简单教程</h1>
-                    <h2 class="subheading">Note：NPM组件封装的详细流程</h2>
-                    <span class="meta">
-                        Posted by Cain on
-                        2016-12-01
-                    </span>
                 </div>
             </div>
         </div>
-    </div>
+    </iframe>
 </header>
 
 <!-- Post Content -->
@@ -191,22 +204,24 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <p><img src="http://upload-images.jianshu.io/upload_images/2541263-323429c0dc2c19cc.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="组件化.jpg"></p>
-<p>npm是一个node包管理和分发工具，已经成为了非官方的发布node模块（包）的标准。通过npm可以很快的找到特定服务要使用的包，进行下载、安装以及管理已经安装的包。<br>本文将就如何发布npm包进行一个详细的介绍以及将之前封装的react-native-zkbanner作为例子进行发布。</p>
-<h4 id="注册npm账户："><a href="#注册npm账户：" class="headerlink" title="注册npm账户："></a>注册npm账户：</h4><p>进行发布的操作之前，我们需要首先在npm官网上注册自己的账号，用于后面发布时使用。<br>注册地址：<a href="https://www.npmjs.com/" target="_blank" rel="external">https://www.npmjs.com/</a></p>
-<h4 id="添加账号信息："><a href="#添加账号信息：" class="headerlink" title="添加账号信息："></a>添加账号信息：</h4><p>这里我们发布到npm官网所在的仓库，执行以下命令添加用户信息：<br><figure class="highlight tcl"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm adduser --<span class="keyword">registry</span> <span class="keyword">http</span>://<span class="keyword">registry</span>.npmjs.org</div></pre></td></tr></table></figure></p>
-<p>执行命令之后，会提示填写用户名，密码以及邮箱，填写之前在官网注册的信息就可以了。</p>
-<h4 id="发布npm插件："><a href="#发布npm插件：" class="headerlink" title="发布npm插件："></a>发布npm插件：</h4><p>1、在命令行工具中，切换当前路径到要发布的插件的路径下，发布必须有package.json文件，这是使用npm init命令生成的，根据自己插件的具体信息再进行输入。下面代码是react-native-zkbanner组件的package.json文件。<br><figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="attr">"name"</span>: <span class="string">"react-native-zkbanner"</span>,</div><div class="line">  <span class="attr">"version"</span>: <span class="string">"1.0.0"</span>,</div><div class="line">  <span class="attr">"description"</span>: <span class="string">"zkbanner"</span>,</div><div class="line">  <span class="attr">"main"</span>: <span class="string">"index.js"</span>,</div><div class="line">  <span class="attr">"scripts"</span>: &#123;</div><div class="line">    <span class="attr">"test"</span>: <span class="string">"echo \"Error: no test specified\" &amp;&amp; exit 1"</span></div><div class="line">  &#125;,</div><div class="line">  <span class="attr">"keywords"</span>: [</div><div class="line">    <span class="string">"react-native"</span>,</div><div class="line">    <span class="string">"banner"</span>,</div><div class="line">    <span class="string">"react-native-zkbanner"</span></div><div class="line">  ],</div><div class="line">  <span class="attr">"author"</span>: <span class="string">"Cain"</span>,</div><div class="line">  <span class="attr">"license"</span>: <span class="string">"MIT"</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<h4 id="name"><a href="#name" class="headerlink" title="name:"></a>name:</h4><p>name和version是package.json中最重要的两个字段，也是发布到NPM平台上的唯一标识，如果没有正确设置这两个字段，包就不能发布和被下载。<br>以下是官方给出的一些建议:<br>名字里不要再包含”js”和”node”，因为默认NPM包就是node.js程序，不过你可以通过engines字段来指定。<br>名字将会被作为url的一部分，所有要符合http url的一般命名规则，不能包含url非法字符，也不能以.和_开头。<br>名字也将作为require()命令的参数，所以应该尽量简明。<br>如果包要发布到NPM平台上的话，最好先检查下有没有重名, 并且字母只能全部小写。<br>新版本的NPM可以指定scope, 名字可以加前缀标识，如@ijse/mypackage。</p>
-<h4 id="version"><a href="#version" class="headerlink" title="version"></a>version</h4><p>发布的版本</p>
-<h4 id="description"><a href="#description" class="headerlink" title="description"></a>description</h4><p>包的描述信息，将会在npm search的返回结果中显示，以帮助用户选择合适的包。</p>
-<h4 id="keywords"><a href="#keywords" class="headerlink" title="keywords"></a>keywords</h4><p>包的关键词信息，是一个字符串数组，同上也将显示在npm search的结果中。</p>
-<h4 id="main"><a href="#main" class="headerlink" title="main"></a>main</h4><p>包的入口文件，如index.js</p>
-<p>以上是package.json的部分字段的介绍，详细可以参考<a href="http://ju.outofmemory.cn/entry/130809" target="_blank" rel="external">package.json for NPM 文件详解
-</a><br>2、将插件发布到npm上：<br><figure class="highlight tcl"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm publish --<span class="keyword">registry</span> <span class="keyword">http</span>://<span class="keyword">registry</span>.npmjs.org</div></pre></td></tr></table></figure></p>
-<p>这里加上–registry <a href="http://registry.npmjs.org" target="_blank" rel="external">http://registry.npmjs.org</a> 是为了区别于我们当前的npm私服，如果不加上的话，发布就是默认发布到npm所设置的源。</p>
-<h4 id="查看发布情况："><a href="#查看发布情况：" class="headerlink" title="查看发布情况："></a>查看发布情况：</h4><p>命令执行完成后，打开npm链接：<a href="https://www.npmjs.com/" target="_blank" rel="external">https://www.npmjs.com/</a> + 插件名， 就可以看到已经成功发布了，这里我的插件地址是：<a href="https://www.npmjs.com/react-native-zkbanner" target="_blank" rel="external">https://www.npmjs.com/react-native-zkbanner</a> 。</p>
-<h3 id="新轮子："><a href="#新轮子：" class="headerlink" title="新轮子："></a>新轮子：</h3><h4 id="react-native-zkbanner"><a href="#react-native-zkbanner" class="headerlink" title="react-native-zkbanner"></a><a href="https://github.com/cainvan/react-native-zkbanner" target="_blank" rel="external">react-native-zkbanner</a></h4><h4 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a><a href="https://github.com/cainvan/ReactBannerDemo" target="_blank" rel="external">Demo</a></h4><h3 id="安装方法："><a href="#安装方法：" class="headerlink" title="安装方法："></a>安装方法：</h3><figure class="highlight livescript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">npm</span> install react-<span class="keyword">native</span>-zkbanner</div></pre></td></tr></table></figure>
+                <blockquote>
+<p>下滑这里查看更多内容</p>
+</blockquote>
+<p>7月9日，我在公司内部进行了名为「JavaScript 模块化七日谈」分享，并将该 Slides 分享到了微博上。出乎意料地，这篇微博先后被 @JS小组 @尤小右 @寸志 等近 200 人转发，阅读达到 10w，获得了还不错的评价。</p>
+<p>于是，我决定将它重新发到我的博客上，并为它专门制作了适用于 Keynote 展示文稿的新布局。它能自动根据屏幕大小/旋转以一定比例填充屏幕，你也可以直接点击下方链接在新页面打开，来获得更好的、沉浸式的全屏体验</p>
+<h3 id="Watch-Slides-→"><a href="#Watch-Slides-→" class="headerlink" title="Watch Slides →"></a><a href="http://huangxuan.me/js-module-7day" target="_blank" rel="external">Watch Slides →</a></h3><p><img src="http://huangxuan.me/js-module-7day/attach/qrcode.png" width="350" height="350"></p>
+<p><small class="img-hint">你也可以通过扫描二维码在手机上观看</small></p>
+<p>这个 Web Slides 开源在<a href="https://github.com/Huxpro/js-module-7day" target="_blank" rel="external">我的 Github 上</a>，欢迎你帮助我完善这个展示文稿，你可以给我提 issue，可以 fork &amp; pull request。如果它能帮助到你了，希望你还能不吝啬 star 一下这个项目</p>
+<h3 id="Catalog"><a href="#Catalog" class="headerlink" title="Catalog"></a>Catalog</h3><ul>
+<li>第一日 上古时期 <strong><em>Module?</em></strong> 从设计模式说起</li>
+<li>第二日 石器时代 <strong><em>Script Loader</em></strong> 只有封装性可不够，我们还需要加载</li>
+<li>第三日 蒸汽朋克 <strong><em>Module Loader</em></strong> 模块化架构的工业革命</li>
+<li>第四日 号角吹响 <strong><em>CommonJS</em></strong> 征服世界的第一步是跳出浏览器</li>
+<li>第五日 双塔奇兵 <strong><em>AMD/CMD</em></strong> 浏览器环境模块化方案</li>
+<li>第六日 精灵宝钻 <strong><em>Browserify/Webpack</em></strong> 大势所趋，去掉这层包裹！</li>
+<li>第七日 王者归来 <strong><em>ES6 Module</em></strong> 最后的战役</li>
+</ul>
+<h3 id="Thanks"><a href="#Thanks" class="headerlink" title="Thanks"></a>Thanks</h3><p><a href="http://lab.hakim.se/reveal-js" target="_blank" rel="external">Reveal.js</a></p>
 
 
                 <hr>
@@ -215,9 +230,13 @@
 
                 <ul class="pager">
                     
+                        <li class="previous">
+                            <a href="https://cainvan.github.io/" data-toggle="tooltip" data-placement="top" title="一步一步教你如何封装使用React Native原生组件">&larr; Previous Post</a>
+                        </li>
+                    
                     
                         <li class="next">
-                            <a href="https://cainvan.github.io/2016/12/01/一步一步教你如何封装使用React Native原生组件/" data-toggle="tooltip" data-placement="top" title="一步一步教你如何封装使用React Native原生组件">Next Post &rarr;</a>
+                            <a href="https://cainvan.github.io/" data-toggle="tooltip" data-placement="top" title="Example Post With Default Header Image">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -233,22 +252,6 @@
                 
 
             </div>
-    <!-- Side Catalog Container -->
-        
-            <div class="
-                col-lg-2 col-lg-offset-0
-                visible-lg-block
-                sidebar-container
-                catalog-container">
-                <div class="side-catalog">
-                    <hr class="hidden-sm hidden-xs">
-                    <h5>
-                        <a class="catalog-toggle" href="#">CATALOG</a>
-                    </h5>
-                    <ul class="catalog-body"></ul>
-                </div>
-            </div>
-        
 
     <!-- Sidebar Container -->
 
@@ -263,9 +266,7 @@
                     <!-- no hr -->
                     <h5><a href="https://cainvan.github.io/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
-                       
-                          <a class="tag" href="https://cainvan.github.io/tags/#NPM" title="NPM">NPM</a>
-                        
+                        <a class="tag-link" href="https:/cainvan.github.io/tags/JavaScript/">JavaScript</a><a class="tag-link" href="https:/cainvan.github.io/tags/Linux/">Linux</a><a class="tag-link" href="https:/cainvan.github.io/tags/NPM/">NPM</a><a class="tag-link" href="https:/cainvan.github.io/tags/OS/">OS</a><a class="tag-link" href="https:/cainvan.github.io/tags/Objective-C/">Objective-C</a><a class="tag-link" href="https:/cainvan.github.io/tags/Unix/">Unix</a><a class="tag-link" href="https:/cainvan.github.io/tags/iOS/">iOS</a><a class="tag-link" href="https:/cainvan.github.io/tags/前端开发/">前端开发</a><a class="tag-link" href="https:/cainvan.github.io/tags/生活/">生活</a><a class="tag-link" href="https:/cainvan.github.io/tags/移动端/">移动端</a><a class="tag-link" href="https:/cainvan.github.io/tags/翻译/">翻译</a>
                     </div>
                 </section>
                 
@@ -277,11 +278,11 @@
                 <ul class="list-inline">
 
                     
-                        <li><a href="http://www.jianshu.com/users/03d253b25aaf/latest_articles" target="_blank">简书</a></li>
+                        <li><a href="http://www.jianshu.com/users/03d253b25aaf/latest_articles">简书</a></li>
                     
-                        <li><a href="https://cainvan.github.io" target="_blank">博客</a></li>
+                        <li><a href="https://cainvan.github.io">博客</a></li>
                     
-                        <li><a href="http://gold.xitu.io/user/57d75ee50e3dd90069e7b215" target="_blank">稀土掘金</a></li>
+                        <li><a href="http://gold.xitu.io/user/57d75ee50e3dd90069e7b215">稀土掘金</a></li>
                     
                 </ul>
                 
@@ -298,8 +299,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "hexo-theme-huxblog";
-    var disqus_identifier = "https://cainvan.github.iohttps://cainvan.github.io/2016/12/01/React Native 组件封装上传简单教程/";
-    var disqus_url = "https://cainvan.github.iohttps://cainvan.github.io/2016/12/01/React Native 组件封装上传简单教程/";
+    var disqus_identifier = "https://cainvan.github.iohttps://cainvan.github.io/2015/07/09/js-module-7day/";
+    var disqus_url = "https://cainvan.github.iohttps://cainvan.github.io/2015/07/09/js-module-7day/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
@@ -467,50 +468,6 @@
 
 
 <!-- Side Catalog -->
-
-<script type="text/javascript">
-    function generateCatalog (selector) {
-        var P = $('div.post-container'),a,n,t,l,i,c;
-        a = P.find('h1,h2,h3,h4,h5,h6');
-        a.each(function () {
-            n = $(this).prop('tagName').toLowerCase();
-            i = "#"+$(this).prop('id');
-            t = $(this).text();
-            c = $('<a href="'+i+'" rel="nofollow">'+t+'</a>');
-            l = $('<li class="'+n+'_nav"></li>').append(c);
-            $(selector).append(l);
-        });
-        return true;
-    }
-
-    generateCatalog(".catalog-body");
-
-    // toggle side catalog
-    $(".catalog-toggle").click((function(e){
-        e.preventDefault();
-        $('.side-catalog').toggleClass("fold")
-    }))
-
-    /*
-     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
-     * Fork by Hux to support padding
-     */
-    async("https://cainvan.github.io/js/jquery.nav.js", function () {
-        $('.catalog-body').onePageNav({
-            currentClass: "active",
-            changeHash: !1,
-            easing: "swing",
-            filter: "",
-            scrollSpeed: 700,
-            scrollOffset: 0,
-            scrollThreshold: .2,
-            begin: null,
-            end: null,
-            scrollChange: null,
-            padding: 80
-        });
-    });
-</script>
 
 
 
