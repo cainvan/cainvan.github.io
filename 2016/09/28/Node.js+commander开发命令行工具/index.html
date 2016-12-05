@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          一步一步教你如何封装使用React Native原生组件 - 正凯的博客 | Cain&#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://www.wangzhengkai.online/2016/09/28/Node.js+commander开发命令行工具/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Cain&#39;s Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archives/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://www.wangzhengkai.online/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('home-bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/tags/#Node.js" title="Node.js">Node.js</a>
+                        
+                          <a class="tag" href="/tags/#JavaScript" title="JavaScript">JavaScript</a>
+                        
+                    </div>
+                    <h1>一步一步教你如何封装使用React Native原生组件</h1>
+                    <h2 class="subheading">Note：在React Native中使用原生来构建你的应用</h2>
+                    <span class="meta">
+                        Posted by Cain on
+                        2016-09-28
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>Node.js 是一个基于 Chrome V8 引擎的 JavaScript 运行环境。Node.js 使用了一个事件驱动、非阻塞式 I/O 的模型，使其轻量又高效。Node.js 的包管理器 npm，是全球最大的开源库生态系统。<br>Node.js作为最热的开发工具之一，如何用它来开发命令行程序，是一个web开发者应该学习掌握的。<br>本文主要使用commander插件来进行命令行工具的开发工作。<a href="https://github.com/tj/commander.js" target="_blank" rel="external"><em>Commander.js</em></a> 是 一个帮助快速开发Nodejs命令行工具的package。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/2541263-043e35e2677d16b5.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="命令行工具.jpeg"></p>
+<h2 id="脚本解释程序："><a href="#脚本解释程序：" class="headerlink" title="脚本解释程序："></a>脚本解释程序：</h2><h3 id="usr-bin-env-node"><a href="#usr-bin-env-node" class="headerlink" title="#! /usr/bin/env node"></a>#! /usr/bin/env node</h3><p>在代码的开头第一行，必须指定我们的脚本执行所需要的解释程序。在这里，我们使用node来作为脚本的解释程序。而我们#! /usr/bin/env node这样写，目的是使用env来找到node，并使用node来作为程序的解释程序。</p>
+<h3 id="env"><a href="#env" class="headerlink" title="env"></a>env</h3><p>在env中规定很多系统的环境变量，包括我们安装的一些环境的路径等。在不同的操作系统中，我们安装node的路径可能会有所不同，但是其环境变量会存在于env里面，所以，这里我们使用env来找到node，并用node作为解释程序。所以，env的主要目的就是让我们的脚本在不同的操作系统上都能够正常的被解释，启动。<br>命令行工具开发：<br>这里我们以将sass文件编译转化为css文件，并放到相应目录。监视sass文件变化自动执行编译为css这个功能作为一个列子，一步一步来实现sass文件的编译以及监听功能。</p>
+<table>
+<thead>
+<tr>
+<th>插件</th>
+<th style="text-align:center">安装方法</th>
+<th style="text-align:right">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>commander</td>
+<td style="text-align:center">npm install commander</td>
+<td style="text-align:right">一个帮助快速开发Nodejs命令行工具的package</td>
+</tr>
+<tr>
+<td>chalk</td>
+<td style="text-align:center">npm install chalk</td>
+<td style="text-align:right">终端输出时颜色样式输出工具</td>
+</tr>
+<tr>
+<td>gulp</td>
+<td style="text-align:center">npm install gulp</td>
+<td style="text-align:right">一个自动化构建工具,开发者可以使用它在项目开发过程中自动执行常见任务</td>
+</tr>
+<tr>
+<td>gulp-sass</td>
+<td style="text-align:center">npm install gulp-sass</td>
+<td style="text-align:right">将sass文件编译成css文件的工具</td>
+</tr>
+</tbody>
+</table>
+<p>这里，我们在package.json文件中，定义好命令的名称以及执行该命令时，所执行脚本的路径：<br><figure class="highlight xquery"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="string">"bin"</span>: &#123;</div><div class="line">    <span class="string">"cain"</span>: <span class="string">"./bin/cain.js"</span></div><div class="line"> &#125;,</div></pre></td></tr></table></figure></p>
+<h3 id="cain-js"><a href="#cain-js" class="headerlink" title="cain.js"></a>cain.js</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#! /usr/bin/env node</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> program = <span class="built_in">require</span>(<span class="string">'commander'</span>),</div><div class="line">   chalk = <span class="built_in">require</span>(<span class="string">'chalk'</span>),</div><div class="line">   SassMain = <span class="built_in">require</span>(<span class="string">'./sass.js'</span>);</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * sass编译执行及监听</div><div class="line"> */</div><div class="line">program</div><div class="line">    .command(<span class="string">'sass'</span>)</div><div class="line">    .option(<span class="string">'--w'</span>, <span class="string">'监听sass变化，自动执行编译'</span>)</div><div class="line">    .alias(<span class="string">'sa'</span>)</div><div class="line">    .description(<span class="string">'sass转化css'</span>)</div><div class="line">    .action(<span class="function"><span class="keyword">function</span> (<span class="params">option</span>) </span>&#123;</div><div class="line">      <span class="keyword">var</span> isWatch = option.w ? <span class="literal">true</span> : <span class="literal">false</span>;</div><div class="line">      <span class="keyword">if</span> (isWatch) &#123;</div><div class="line">        SassMain.sassWatch();</div><div class="line">      &#125;<span class="keyword">else</span> &#123;</div><div class="line">        SassMain.sassMake();</div><div class="line">      &#125;</div><div class="line">    &#125;);</div></pre></td></tr></table></figure>
+<p>以上是cain.js脚本的内容，其中定义了一个sass命令。<br>command：执行的命令 sass (这里如果执行的话，就是“cain sass”)<br>option：可选参数 –w (watch 监听sass文件变化，自动执行编译)<br>alias：简写 sa (命令简写为sa 执行就是“cain sa”)<br>description：命令描述<br>action：执行命令后所执行的方法。</p>
+<h3 id="sass-js"><a href="#sass-js" class="headerlink" title="sass.js"></a>sass.js</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * @fileoverview sass文件编译、监听</div><div class="line"> * @author  wangzhengkai</div><div class="line"> */</div><div class="line"><span class="meta"></span></div><div class="line">'use strict';</div><div class="line"></div><div class="line"><span class="keyword">var</span> sass = <span class="built_in">require</span>(<span class="string">'gulp-sass'</span>),</div><div class="line">    chalk = <span class="built_in">require</span>(<span class="string">'chalk'</span>),</div><div class="line">    Util = <span class="built_in">require</span>(<span class="string">'../lib/util'</span>),</div><div class="line">    gulp = <span class="built_in">require</span>(<span class="string">'gulp'</span>);</div><div class="line"></div><div class="line"><span class="keyword">var</span> sassMain = &#123;</div><div class="line">  <span class="attr">sassMake</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    sassChange();</div><div class="line">  &#125;,</div><div class="line">  <span class="attr">sassWatch</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(chalk.green(<span class="string">"  正在监听..."</span>));</div><div class="line">    <span class="keyword">var</span> conf;</div><div class="line">    Util.getConfig(<span class="function"><span class="keyword">function</span>(<span class="params">config</span>)</span>&#123;</div><div class="line">      conf = config;</div><div class="line">    &#125;);</div><div class="line">    <span class="keyword">var</span> watcher = gulp.watch(conf.sass.sassUrl+<span class="string">'*.scss'</span>);</div><div class="line">    watcher.on(<span class="string">'change'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">event</span>) </span>&#123;</div><div class="line">      sassChange();</div><div class="line">    &#125;);</div><div class="line">  &#125;,</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * [sassChange sass文件编译方法]</div><div class="line"> * @return &#123;[type]&#125; [description]</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">sassChange</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> conf;</div><div class="line">  Util.getConfig(<span class="function"><span class="keyword">function</span>(<span class="params">config</span>)</span>&#123;</div><div class="line">    conf = config;</div><div class="line">  &#125;);</div><div class="line">  <span class="keyword">return</span> gulp.src(conf.sass.sassUrl+<span class="string">'*.scss'</span>)</div><div class="line">    .pipe(sass().on(<span class="string">'error'</span>, sass.logError))</div><div class="line">    .pipe(gulp.dest(conf.sass.output));</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="built_in">module</span>.exports = sassMain;</div></pre></td></tr></table></figure>
+<p>sass.js文件中定义了sass文件编译方法以及其监听方法，这里主要通过集成了gulp以及gulp-sass的sass文件编译以及监听方法来实现，如果有兴趣的话，可以去尝试看看这两个插件的内部实现并自己来做。在sass.js文件中，我引用了一个Util文件，在这个文件中，我实现了一个getConfig()方法。这个方法可以获取到用户当前执行目录的配置文件，并从中读取用户设置的相关配置内容。</p>
+<h3 id="getConfig-方法："><a href="#getConfig-方法：" class="headerlink" title="getConfig()方法："></a>getConfig()方法：</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">   * 获取cain config文件</div><div class="line">   */</div><div class="line">   getConfig:<span class="function"><span class="keyword">function</span> (<span class="params">callback</span>) </span>&#123;</div><div class="line">       <span class="keyword">var</span> configPath = path.join(process.cwd(), <span class="string">'cain.config.js'</span>);</div><div class="line">       <span class="keyword">var</span> config = &#123;&#125;;</div><div class="line">       <span class="keyword">if</span> (fs.existsSync(configPath)) &#123;</div><div class="line">           <span class="keyword">try</span> &#123;</div><div class="line">               config = <span class="built_in">eval</span>(fs.readFileSync(configPath,<span class="string">"utf-8"</span>));</div><div class="line">               callback&amp;&amp;callback(config);</div><div class="line">           &#125; <span class="keyword">catch</span> (e) &#123;</div><div class="line">               <span class="built_in">console</span>.log(<span class="string">"读取cain.config.js文件失败"</span>);</div><div class="line">           &#125;</div><div class="line">       &#125;<span class="keyword">else</span> &#123;</div><div class="line">           <span class="built_in">console</span>.log(<span class="string">"cain.config.js文件不存在，请检查后再试"</span>);</div><div class="line">       &#125;</div><div class="line">   &#125;,</div></pre></td></tr></table></figure>
+<h3 id="cain-config-js文件内容："><a href="#cain-config-js文件内容：" class="headerlink" title="cain.config.js文件内容："></a>cain.config.js文件内容：</h3><figure class="highlight dts"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">module.exports = &#123;</div><div class="line"><span class="symbol">    name:</span><span class="string">"test"</span>,</div><div class="line"><span class="symbol">    sass:</span>&#123;</div><div class="line"><span class="symbol">        sassUrl:</span><span class="string">"sass/"</span>,</div><div class="line"><span class="symbol">        output:</span><span class="string">"css/"</span></div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>至此，sass文件编译以及监听的开发工作就完成了。<br>最后，想要看到执行效果，只需要在package.json文件所在目录下执行npm link命令就可以执行了。</p>
+<h2 id="小结："><a href="#小结：" class="headerlink" title="小结："></a>小结：</h2><p>在命令行工具开发的过程中，充分利用好commander、inquirer以及chalk还有其他的一些npm插件，可以很好的完成命令行工具的开发，并且可以达到很棒的效果，感兴趣的话，赶快试试吧，做一款自己的命令行工具。</p>
+
+
+                <hr>
+
+                
+                <!-- 多说 Share start -->
+                </style>
+                <div class="ds-share"
+                    style="text-align: right"
+                    data-thread-key="2016/09/28/Node.js+commander开发命令行工具/"
+                    data-title="一步一步教你如何封装使用React Native原生组件"
+                    data-url="http://www.wangzhengkai.online/2016/09/28/Node.js+commander开发命令行工具/"
+                    data-images="http://www.wangzhengkai.online/2016/09/28/Node.js+commander开发命令行工具/home-bg.jpg"
+                    data-content="Node.js 是一个基于 Chrome V8 引擎的 JavaScript 运行环境。Nod... | 正凯的博客 | Cain&#39;s Blog " >
+                    <div class="ds-share-inline">
+                      <ul  class="ds-share-icons-16">
+                        <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
+                        <li><a class="ds-wechat flat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+                        <li><a class="ds-weibo flat" href="javascript:void(0);" data-service="weibo">微博</a></li>
+                        <li><a class="ds-douban flat" href="javascript:void(0);" data-service="douban">豆瓣</a></li>
+                      </ul>
+                      <div class="ds-share-icons-more">
+                      </div>
+                    </div>
+                <hr>
+                </div>
+                <!-- 多说 Share end-->
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2016/10/20/使用webpack轻松构建你的第一个react开发框架/" data-toggle="tooltip" data-placement="top" title="一步一步教你如何封装使用React Native原生组件">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2016/09/22/React Native 组件封装上传简单教程/" data-toggle="tooltip" data-placement="top" title="React Native组件封装上传简单教程">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+                <!-- 多说评论框 start -->
+                <div class="comment">
+                    <div class="ds-thread"
+                        data-thread-key="2016/09/28/Node.js+commander开发命令行工具/"
+                        data-title="一步一步教你如何封装使用React Native原生组件"
+                        data-url="http://www.wangzhengkai.online/2016/09/28/Node.js+commander开发命令行工具/" >
+                    </div>
+                </div>
+                <!-- 多说评论框 end -->
+                
+                
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Node.js" title="Node.js">Node.js</a>
+                        
+                          <a class="tag" href="/tags/#JavaScript" title="JavaScript">JavaScript</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="http://www.jianshu.com/users/03d253b25aaf/latest_articles" target="_blank">简书</a></li>
+                    
+                        <li><a href="https://cainvan.github.io" target="_blank">博客</a></li>
+                    
+                        <li><a href="http://gold.xitu.io/user/57d75ee50e3dd90069e7b215" target="_blank">稀土掘金</a></li>
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    // dynamic User by Hux
+    var _user = 'wangzhengkai';
+
+    // duoshuo comment query.
+    var duoshuoQuery = {short_name: _user };
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+</script>
+<!-- 多说公共JS代码 end -->
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://www.facebook.com/wangzhengkai.me">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/cainvan">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+                
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Cain&#39;s Blog 2016
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://www.wangzhengkai.online/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
